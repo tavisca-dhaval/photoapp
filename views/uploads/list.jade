@@ -1,0 +1,17 @@
+extends ../layout.jade
+
+block content
+	div.container-fluid
+		ul.cat-images
+			each imPath in categoryImage
+				li
+					div.img-box
+						img(src="/images/#{imPath.catName}/thumb/#{imPath.filename}")
+						span(aria-hidden="true" class="glyphicon glyphicon-ok-sign img-selector" id="#{imPath._id}" imgName="#{imPath.filename}")
+	
+	div.container-fluid.tagssection
+
+		div#tag-list
+		
+		input(value='' id='addnewtag')
+	

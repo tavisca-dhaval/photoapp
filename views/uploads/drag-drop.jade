@@ -1,0 +1,72 @@
+extends ../layout.jade
+
+block content
+	div#dropableDiv
+	div.container.image-container
+		div#myId.clearfix
+			div.clearfix
+				- if(images.length < 1)
+					div.text-center.initial-container
+						a(href="javascript:void(0)" class="upload_link btn btn-danger") Browse Photos
+						p Or drag &amp; drop photos anywhere on this page
+				ul.cat-images.clearfix
+					each imgName in images
+						li
+							div.img-box
+								a(href="/images/#{imgName.filename}" class="fancybox-button" rel="fancybox-button")
+									img(src="/images/thumb/#{imgName.filename}")
+								span(aria-hidden="true" class="glyphicon glyphicon-ok-sign img-selector" id="#{imgName._id}" imgName="#{imgName.filename}")
+	div.container-fluid.tagssection
+
+		h4 Tags
+
+		div#tag-list
+		
+		input(value='' id='addnewtag')
+
+		hr
+
+		h4 Image Information
+
+		#imgInformation
+
+	div.popupImageDrag
+		div.popupImgContainer
+	div(class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel")
+		div(class="modal-dialog" role="document")
+			div.modal-content
+				div.modal-header
+					button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") &times;
+					h4(class="modal-title" id="myModalLabel") Create Album
+				div.modal-body
+					label(for="categoryName") Album Name
+					input(type="text" name="albumName" class="form-control" id="albumName" placeholder="Album Name" value="")
+				div.modal-footer
+					button(id="createAlbum" type="button" class="btn btn-primary") Create
+
+	div.alert.alert-success.album-create-notification
+		| successfully created album "
+		span.album-name
+		| ".
+	
+	link( rel='stylesheet', href='/stylesheets/jquery.fancybox.css' )
+	link( rel='stylesheet', href='/images/source/helpers/jquery.fancybox-buttons.css' )
+	link( rel='stylesheet', href='/images/source/helpers/jquery.fancybox-thumbs.css' )
+	script(src='javascripts/jquery-mousewheel.js')
+	script(src='javascripts/jquery.fancybox.pack.js')
+	script(src='/images/source/helpers/jquery.fancybox-buttons.js')
+	script(src='/images/source/helpers/jquery.fancybox-media.js')
+	script(src='/images/source/helpers/jquery.fancybox-thumbs.js')
+	script.
+		$(document).ready(function() {
+		$(".fancybox-button").fancybox({
+		prevEffect		: 'none',
+		nextEffect		: 'none',
+		closeBtn		: false,
+		helpers		: {
+		title	: { type : 'inside' },
+		buttons	: {}
+		}
+		});
+		});

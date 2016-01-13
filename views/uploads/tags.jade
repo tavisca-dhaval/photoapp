@@ -1,0 +1,9 @@
+extends ../layout.jade
+
+block content
+	div.container-fluid
+		ul.tag-name
+			each tagObj in TagsList
+				if(tagObj.ImgIds.length > 0)
+					li
+						a(class="" href="/showTags/#{tagObj.tagName}" id="#{tagObj.tagName}") #{tagObj.tagName}

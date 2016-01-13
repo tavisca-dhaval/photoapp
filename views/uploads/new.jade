@@ -1,0 +1,15 @@
+extends ../layout.jade
+
+block content
+	div.container-fluid
+		form(method="POST", action="/category", enctype="multipart/form-data")
+			div.form-group
+				label(for="fileSelect") Select File
+				input(type="file" name="photos" id="fileSelect" placeholder="Category Name")
+			div.form-group
+				label(for="categoryName") Category Name
+				input(type="text" name="category" class="form-control" id="categoryName" placeholder="Category Name")
+			div.form-group
+				label(for="fileName") File Name
+				input(type="text" name="fileName" class="form-control" id="fileName" placeholder="File Name")
+			button(type="submit" class="btn btn-primary") Upload

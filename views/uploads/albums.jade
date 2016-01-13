@@ -1,0 +1,9 @@
+extends ../layout.jade
+
+block content
+	div.container-fluid
+		ul.tag-name
+			each albumObj in albumsList
+				if(albumObj.ImgIds.length > 0)
+					li
+						a(class="" href="/albums/#{albumObj.albumName}" id="#{albumObj.albumName}") #{albumObj.albumName}

@@ -1,0 +1,22 @@
+doctype html
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+		script(src='/js/jquery-1.11.3.min.js')
+		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
+		script(src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js")
+		script(src='/js/style.js')
+		script(src='/js/app.js')
+	body
+		div.bg-home.bg-image-fade
+		div.container.home-wrapper
+			div.row
+				div.col-sm-12.faded-box
+					h1.text-center Photo App
+					h2.text-center
+						span.text-fade never let your <strong>MOMENTS</strong> fade away.
+					div.text-center
+						a.btn.btn-danger(type='button', href="/category") START UPLOADING
+		div

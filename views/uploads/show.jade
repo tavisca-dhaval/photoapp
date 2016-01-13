@@ -1,0 +1,25 @@
+extends ../layout.jade
+
+block content
+	div.container-fluid
+		- var catArray = [];
+		ul.category-list
+			each image in categories
+				//- catArray.push(image.catName)
+				- if(catArray.indexOf(image.catName) === -1)
+					- catArray.push(image.catName)
+					li
+						a(href="/category/#{image.catName}" class="category")
+							p.cat-name #{image.catName}					
+						p.settings
+							a(class="cat-edit" categoryName=image.catName)
+					
+
+						<!-- Button trigger modal -->
+	div#popup
+	
+
+	
+    
+					
+					

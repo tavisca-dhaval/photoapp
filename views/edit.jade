@@ -1,0 +1,7 @@
+form(method="POST",action="/users/#{user.username}")
+	input(type="hidden" name="_method" value="PUT")
+	p Name: 
+		input(type="text" name="username", value="#{user.username}")
+	//- p Email: 
+		//- input(type="text" name="useremail", value="#{user.email}")
+	button(type="submit") submit
