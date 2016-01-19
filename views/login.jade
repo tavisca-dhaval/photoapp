@@ -1,0 +1,12 @@
+extends layout.jade
+block content
+	- var newUser = userEmail || "";
+	- console.log(newUser)
+	<a href="/auth/google">Sign In with Google</a>
+	br
+	<a href="/auth/facebook">Login with Facebook</a>
+
+	script.
+		//- $(document).ready(function() {
+		//- console.log(newUser)
+		//- });

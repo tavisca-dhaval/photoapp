@@ -41,16 +41,9 @@ $(function(){
 		var params ={ ids: xid, imageNames: xname};
 		$.post('/deleteImage', params, function(data){
 		});
-		// $('.img-box.active').length)
-		// var albumName = $('#myModal input[name="albumName"]').val();
-		// var params ={ albumName:albumName, idsss: imgIdArray};	
-		// $('.album-create-notification span').html(albumName);
-		// $.post('/saveAlbum', params, function(data){
-		// });
-		// $( document ).ajaxComplete(function() {
-		//   $('#myModal').modal('toggle');
-		//   $('.album-create-notification').addClass('show');
-		// });
+		$( document ).ajaxComplete(function() {
+		  document.location.reload();
+		});
 	});
 	$('.cat-edit').on('click',function(){	
 	 var name = $(this).attr('categoryname');

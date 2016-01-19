@@ -12,12 +12,27 @@ var routes = require('./routes');
 var user = require('./routes/users');
 var qs = require('qs');
 
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var session = require('express-session');
+var FacebookStrategy = require('passport-facebook').Strategy;
+
+var GOOGLE_CONSUMER_KEY = '978631038383-mc0lf23hgbhnrcvm8b22un241vdq04f0.apps.googleusercontent.com';
+var GOOGLE_CONSUMER_SECRET = 'hMcJZNWysmQhGTtZdIWFRYdA';
+
+var FACEBOOK_APP_ID = '1117700208242214';
+var FACEBOOK_APP_SECRET = 'bec64151b08c653d5d98f793e37c74e7';
+
+
 // New Code
 var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/nodetest1');
 
 var app = express();
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // view engine setup
 app.set('views', __dirname+'/views');
@@ -68,6 +83,7 @@ app.post('/checkImageExist',routes.imageExistCheck);
 
 app.post('/category', routes.category)
 app.get('/albums', routes.allAlbums);
+app.get('/login', routes.login);
 
 app.get('/albums/:name', routes.albumDetails)
 
@@ -166,5 +182,90 @@ app.get("/category", function(req, res){
     });
 });
 
+// login/signup
+
+app.get('/login',function(req,res){
+    res.render('login');
+})
+passport.use(new GoogleStrategy({
+    clientID: GOOGLE_CONSUMER_KEY,  
+    clientSecret: GOOGLE_CONSUMER_SECRET,
+    callbackURL: "http://localhost:8080/auth/google/callback"
+  },
+  function(token, tokenSecret, profile, done) {
+    console.log(profile);
+    done(null, profile);
+  }
+));
+
+passport.use(new FacebookStrategy({
+    clientID: FACEBOOK_APP_ID,
+    clientSecret: FACEBOOK_APP_SECRET,
+    profileFields: ['id', 'displayName', 'photos', 'email', 'name'],
+    callbackURL: "http://localhost:8080/auth/facebook/callback"
+  },
+  function(accessToken, refreshToken, profile, done) {
+    // User.findOrCreate(. .., function(err, user) {
+    //   if (err) { return done(err); }
+    //   done(null, user);
+    // });
+    process.nextTick(function() {
+        if (!profile.provider) profile.provider = 'facebook';
+        // console.log(process);
+        done(null, profile);
+    });
+  }
+));
+
+passport.serializeUser(function(user, done) {  
+    console.log('serializeUser');
+    if (!user){
+      throw new Error('invalid user, login failed!');
+    }
+    else {
+      session.user = {
+        id: user.id,
+        displayName: user.displayName,
+        email: user.emails[0].value,
+        provider: user.provider
+      }
+      console.log(session.user);
+    };
+
+    done(null, session.user);
+});
+
+passport.deserializeUser(function(id, done) {  
+    console.log('deserializeUser');
+});
+
+app.get('/auth/google', passport.authenticate('google', {
+    scope: ['email']
+}));
+  
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/users' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    console.log('login success');
+    res.redirect('/login');
+});
+
+
+// Redirect the user to Facebook for authentication.  When complete, Facebook will redirect the user back to the application 
+// at '/auth/facebook/callback'
+app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email']
+}));
+
+// Facebook will redirect the user to this URL after approval.  Finish the authentication process by attempting to obtain an 
+// access token. If access was granted, the user will be logged in.  Otherwise, authentication has failed.
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/users' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    console.log('login success');
+    res.redirect('/login');
+});
 
 module.exports = app;

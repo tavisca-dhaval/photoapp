@@ -10,6 +10,7 @@
     "cookie-parser": "~1.3.5",
     "debug": "~2.2.0",
     "express": "~4.12.4",
+    "express-session": "^1.13.0",
     "jade": "~1.9.2",
     "morgan": "~1.5.3",
     "serve-favicon": "~2.2.1",
@@ -19,7 +20,9 @@
     "multiparty": "~4.1.2",
     "connect":"~2.14.4",
     "easyimage" : "*",
-    "fs-extra" : "*"
+    "fs-extra" : "*",
+    "passport": "^0.3.2",
+    "passport-google-oauth": "^0.2.0"
   },
   "devDependencies" : {
     "nodemon" : "*"

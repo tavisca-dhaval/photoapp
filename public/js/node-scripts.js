@@ -9,6 +9,12 @@ module.exports = {
   }
   return newArray;
 },
+setCookie: function setCookie(userEmail) {
+    var d = new Date();
+    d.setTime(d.getTime() + (24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = "userEmail="+userEmail+";"+expires;
+},
 getRandomName : function createName (objStr)
 {
   alert(objStr+"_"+Math.floor(Math.random() * (300 - 200 + 1) + min))
