@@ -9,6 +9,12 @@ module.exports = {
   }
   return newArray;
 },
+isLoggedIn: function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/login');
+},
 setCookie: function setCookie(userEmail) {
     var d = new Date();
     d.setTime(d.getTime() + (24*60*60*1000));

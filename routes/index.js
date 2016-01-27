@@ -68,11 +68,8 @@ exports.saveAlbum = function(req, res)
 	             
 	            res.send(docs);
             }		
-
 		)
 	}
-	
-	
 };
 exports.saveTags = function(req, res)
 {
@@ -336,7 +333,7 @@ exports.deleteImage = function(req, res)
         });
 		albumCollection.update(
 			{},
-			{$pull : {"ImgIds": "569639e6d8d4c4ef2c0e9d1e"}},
+			{$pull : {"ImgIds": nobj}},
 			{ multi: true },
 			function(err,docs){
 				res.send(docs)
@@ -359,22 +356,16 @@ exports.deleteImage = function(req, res)
 	}
 };
 
-exports.login = function(req,res)
-{
-	var db = req.db;
-  	var collection = db.get('user');
-  	var userEmail = "";
-  	if(session.user != undefined){
-  		console.log(123)
-	  	collection.update(
-	  	 	{"userEmail":session.user.email},
-	  	 	{$set:{"userEmail": session.user.email}},
-			{upsert : true} ,
-			function(err, docs){   
-				res.redirect('/users/' + session.user.email);    	
-	        }		
-	    );
-  	}else{
-	  	res.render('login');
-  	}
+exports.favourite = function(req,res){
+	var db = req.db;	
+	var userCollection = db.get('user');
+	var nobj= new ObjectID(req.body.ids);
+	userCollection.update(
+		{email: req.body.useremail},
+		{$addToSet:{"ImgIds": nobj}},
+		{multi:true},
+		function(err,docs){
+			res.send(true);
+		}
+	)
 }

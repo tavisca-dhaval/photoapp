@@ -108,6 +108,9 @@ div.img-box .glyphicon
     right: 0;
     cursor: pointer;
 }
+div.img-box .glyphicon.fav-image{
+    right: 30px;
+}
 .tag-name { 
     margin-top: 15px;
     list-style: none;

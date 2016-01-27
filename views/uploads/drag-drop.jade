@@ -1,6 +1,7 @@
 extends ../layout.jade
 
 block content
+	input(type="hidden" id="user-email" value="#{useremail}")
 	div#dropableDiv
 	div.container.image-container
 		div#myId.clearfix
@@ -16,6 +17,7 @@ block content
 								a(href="/images/#{imgName.filename}" class="fancybox-button" rel="fancybox-button")
 									img(src="/images/thumb/#{imgName.filename}")
 								span(aria-hidden="true" class="glyphicon glyphicon-ok-sign img-selector" id="#{imgName._id}" imgName="#{imgName.filename}")
+								span(aria-hidden="true" class="glyphicon glyphicon-heart fav-image" id="#{imgName._id}" imgName="#{imgName.filename}")
 	div.container-fluid.tagssection
 
 		h4 Tags
