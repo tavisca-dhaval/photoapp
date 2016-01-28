@@ -31,16 +31,15 @@ $(function(){
 		});
 	});
 	$('.fav-image').on('click',function(){
-		console.log(imgIdArray)
-		if($('#user-email').val() == ""){
-			document.location.pathname = "/login"
-		}else{
-			var params ={ useremail:$('#user-email').val(), ids: $(this).attr('id')};
+		// if($('#user-email').val() == ""){
+		// 	document.location.pathname = "/login"
+		// }else{
+			var params ={ ids: $(this).attr('id')};
 			$.post('/favourite', params, function(data){
 			}).done(function(response){
 				$(this).addClass('fav')
 			});
-		}
+		// }
 	});
 	$('.delete-image').on('click',function(){
 		var xid = [];

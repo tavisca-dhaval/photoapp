@@ -1,0 +1,9 @@
+extends layout.jade
+
+block content
+	div.container-fluid 
+		ul.cat-images
+			each imPath in categoryImage
+				li
+					div.img-box
+						img(src="/images/thumb/#{imPath.filename}")

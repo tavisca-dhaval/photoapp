@@ -1,4 +1,5 @@
 var customeJS = require('../public/js/node-scripts.js');
+var ObjectID = require('mongodb').ObjectID;
 module.exports = function(app, passport) {
 
     // normal routes ===============================================================
@@ -33,16 +34,34 @@ module.exports = function(app, passport) {
         var email;
         var db = req.db;
         var collection = db.get('photocollection');
-        var userCollection = db.get('user');
-        var userDocs;
-        if(req.user){
-            email = req.user.email;
-        }else{
-            email = "";
-        }
-        collection.find({},{},function(err,docs) {
-            res.render("uploads/drag-drop",{useremail:email,images:docs.reverse()});
+        collection.find({},function(err,docs) {
+            console.log(docs)
+            res.render("uploads/drag-drop",{images:docs});
         });
+    });
+    app.get('/favourite', customeJS.isLoggedIn, function(req,res){
+        var userEmail = req.user.email;
+        var db = req.db;
+        var photocollection = db.get('photocollection');
+        var usercollection = db.get('user');
+        usercollection.find({email:userEmail},function(err,docs){
+            var Ids = [];
+            var favImgIds  = docs[0].ImgIds
+            for( i = 0 ; i < favImgIds.length; i++)  
+            {
+                Ids.push(new ObjectID(favImgIds[i]))
+            }
+            console.log(Ids)
+            photocollection.find(
+
+                { _id: { $in: Ids}},
+
+                function(err, docs)
+                {
+                    res.render("userFavourite", {categoryImage:docs}) ;   
+                }
+            )
+        })
     });
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
