@@ -2,6 +2,10 @@ extends layout.jade
 
 block content
 	div.container-fluid 
+		- if(categoryImage.length < 1)
+			p 
+				| You don't have any favourite. For select your favourites 
+				a(href="/category") click here
 		ul.cat-images
 			each imPath in categoryImage
 				li

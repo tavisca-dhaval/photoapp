@@ -1,12 +1,8 @@
 extends layout.jade
 block content
-	- var newUser = userEmail || "";
-	- console.log(newUser)
-	<a href="/auth/google">Sign In with Google</a>
-	br
-	<a href="/auth/facebook">Login with Facebook</a>
-
-	script.
-		//- $(document).ready(function() {
-		//- console.log(newUser)
-		//- });
+	<div class="jumbotron text-center">
+	<h1><span class="fa fa-lock"></span> Node Authentication</h1>
+	<p>Login or Register with:</p>
+	<a class="btn btn-danger" href="/auth/google"><span class="fa fa-google-plus"></span> Google+</a>
+	</div>
+	//- <a class="btn btn-danger" href="/auth/google"><span class="fa fa-google-plus"></span> Google+</a>

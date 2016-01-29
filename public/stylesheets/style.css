@@ -111,6 +111,9 @@ div.img-box .glyphicon
 div.img-box .glyphicon.fav-image{
     right: 30px;
 }
+div.img-box .glyphicon.fav-image.fav{
+    color: #d9534f;
+}
 .tag-name { 
     margin-top: 15px;
     list-style: none;

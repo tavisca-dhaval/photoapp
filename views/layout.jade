@@ -3,11 +3,12 @@ html
 	head
 		title= title
 		link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css')
+		link(rel='stylesheet', href='http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
 		link(rel='stylesheet', href='/stylesheets/dropzone.css')
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		script(src='/js/jquery-1.11.3.min.js')
 		script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js')
-		script(src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js")
+		script(src="http://cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.0.0/handlebars.min.js")
 		script(src="/js/dropzone.js")
 		script(src="/js/exif.js")
 		script(src='/js/app.js')
@@ -17,6 +18,14 @@ html
 		header
 			div.container-fluid
 				h1.pull-left PhotoApp
+				- if(user) {
+					p.pull-right
+						span Welcome #{user.name} | 
+						a(href="/logout") Logout
+				- } else {
+					p.pull-right
+						a(href="/login" class="pull-right") Login
+				- }
 		div.navbar.navbar-default
 			ul.nav.navbar-nav.pull-left
 				li
@@ -24,14 +33,30 @@ html
 
 				li
 					a(class="" href="/showTags" id="tagsList") Tags
-				li
-					a(href="javascript:void(0)" class="pull-right upload_link") Upload
-				li
-					a(href="javascript:void(0)" class="pull-right create-album") Create Album
-				li
-					a(href="javascript:void(0)" class="pull-right delete-image") Delete
-				li
-					a(href="/favourite" class="pull-right do-favourite") Favourite
+				- if(user) {
+					li
+						a(href="javascript:void(0)" class="pull-right upload_link") Upload
+				- }
+				- if(user) {
+					li
+						a(href="javascript:void(0)" class="pull-right create-album") Create Album
+				- }
+				- if(user) {
+					li
+						a(href="javascript:void(0)" class="pull-right delete-image") Delete
+				- }
+				- if(user != null) {
+					li
+						a(href="/favourite" class="pull-right do-favourite") Favourite
+				- } else {
+					li
+						a(href="/login" class="pull-right do-favourite") Favourite
+				- }
+				- if(user != null){
+					input(type="hidden" id="user-email" value="loggedIn")
+				-}else{
+					input(type="hidden" id="user-email" value="loggedOut")
+				-}
 
 
 			ul.nav.navbar-nav.pull-right

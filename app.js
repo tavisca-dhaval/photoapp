@@ -101,7 +101,6 @@ app.get("/", function(req,res){
     res.render("home");
 });
 
-
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

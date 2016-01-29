@@ -31,15 +31,17 @@ $(function(){
 		});
 	});
 	$('.fav-image').on('click',function(){
-		// if($('#user-email').val() == ""){
-		// 	document.location.pathname = "/login"
-		// }else{
+		if($('#user-email').val() == "loggedOut"){
+			document.location.pathname = "/login";
+			
+		}else{
+			var _this = $(this);
 			var params ={ ids: $(this).attr('id')};
 			$.post('/favourite', params, function(data){
-			}).done(function(response){
-				$(this).addClass('fav')
+			}).complete(function(response){
+				_this.addClass('fav');
 			});
-		// }
+		}
 	});
 	$('.delete-image').on('click',function(){
 		var xid = [];

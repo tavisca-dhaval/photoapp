@@ -358,15 +358,18 @@ exports.deleteImage = function(req, res)
 
 exports.favourite = function(req,res){
 	var db = req.db;	
-	console.log(req.user.email)
 	var userCollection = db.get('user');
 	var nobj= new ObjectID(req.body.ids);
-	userCollection.update(
-		{email: req.user.email},
-		{$addToSet:{"ImgIds": nobj}},
-		{multi:true},
-		function(err,docs){
-			res.send(true);
-		}
-	)
+	if(req.user){
+		userCollection.update(
+			{email: req.user.email},
+			{$addToSet:{"ImgIds": nobj}},
+			{multi:true},
+			function(err,docs){
+				res.send(true);
+			}
+		)
+	}else{
+		res.end();
+	}
 }

@@ -9,6 +9,10 @@ module.exports = function(app, passport) {
         res.render('login');
     });
 
+    app.get("*",function(req,res,next){
+        res.locals.user = req.user || null;
+        next();
+    });
     // PROFILE SECTION =========================
 
     // PROFILE SECTION =========================
@@ -34,9 +38,16 @@ module.exports = function(app, passport) {
         var email;
         var db = req.db;
         var collection = db.get('photocollection');
+        var usercollection = db.get('user');
+        var imgIds = "";
+        if(req.user){
+            usercollection.find({email:req.user.email},function(err,docs){
+                if(docs[0].ImgIds)
+                    imgIds = docs[0].ImgIds.toString();
+            });
+        }
         collection.find({},function(err,docs) {
-            console.log(docs)
-            res.render("uploads/drag-drop",{images:docs});
+            res.render("uploads/drag-drop",{imgIds:imgIds,images:docs});
         });
     });
     app.get('/favourite', customeJS.isLoggedIn, function(req,res){
@@ -46,23 +57,28 @@ module.exports = function(app, passport) {
         var usercollection = db.get('user');
         usercollection.find({email:userEmail},function(err,docs){
             var Ids = [];
-            var favImgIds  = docs[0].ImgIds
-            for( i = 0 ; i < favImgIds.length; i++)  
-            {
-                Ids.push(new ObjectID(favImgIds[i]))
-            }
-            console.log(Ids)
-            photocollection.find(
-
-                { _id: { $in: Ids}},
-
-                function(err, docs)
+            var favImgIds  = docs[0].ImgIds;
+            if(favImgIds !== undefined){
+                for( i = 0 ; i < favImgIds.length; i++)  
                 {
-                    res.render("userFavourite", {categoryImage:docs}) ;   
+                    Ids.push(new ObjectID(favImgIds[i]))
                 }
-            )
+                photocollection.find(
+
+                    { _id: { $in: Ids}},
+
+                    function(err, docs)
+                    {
+                        res.render("userFavourite", {categoryImage:docs}) ;   
+                    }
+                )
+            }else{
+                res.render("userFavourite", {categoryImage:[]});
+                res.end();
+            }
         })
     });
+
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
