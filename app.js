@@ -66,7 +66,7 @@ app.get('/updatecategory', routes.updatecategory)
 app.get('/imginfo', routes.imageinformation)
 
 
-app.post('/saveAlbum', routes.saveAlbum)
+// app.post('/saveAlbum', routes.saveAlbum)
 app.post('/deleteImage', routes.deleteImage)
 app.get('/allTags', routes.allTags)
 app.get('/saveTags', routes.saveTags)
@@ -74,17 +74,17 @@ app.get('/removeTag', routes.removeTag)
 app.get('/searchbytag', routes.searchimagebytags)
 
 
-app.get('/showTags', routes.showTags)
+// app.get('/showTags', routes.showTags)
 
 app.get('/showTags/:name', routes.tagDetails)
 
 app.post('/checkImageExist',routes.imageExistCheck);
 
 app.post('/category', routes.category)
-app.get('/albums', routes.allAlbums);
+// app.get('/albums', routes.allAlbums);
 app.post('/favourite', routes.favourite);
 
-app.get('/albums/:name', routes.albumDetails)
+// app.get('/albums/:name', routes.albumDetails)
 
 // app.post('/doFavourite', routes.doFavourite)
 
@@ -100,7 +100,6 @@ app.get('/albums/:name', routes.albumDetails)
 app.get("/", function(req,res){
     res.render("home");
 });
-
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 

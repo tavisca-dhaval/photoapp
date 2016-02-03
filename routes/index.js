@@ -53,24 +53,6 @@ exports.updatecategory = function(req, res)
     }
 };
 
-exports.saveAlbum = function(req, res)
-{
-	var db = req.db;	
-	var albumCollection = db.get('albumCollection');
-	var x=qs.parse(req.body);
-	for(var i=0;i<x.idsss.length;i++){
-		var nobj= new ObjectID(x.idsss[i]);
-		albumCollection.update(
-			{albumName : req.body.albumName},
-			{$addToSet : {"ImgIds": nobj}},
-			{upsert : true} ,
-			function(err, docs){            	
-	             
-	            res.send(docs);
-            }		
-		)
-	}
-};
 exports.saveTags = function(req, res)
 {
 	var tagName = req.query.tagName;
@@ -142,19 +124,6 @@ exports.removeTag = function(req, res)
 	
 };
 
-exports.showTags = function(req, res)
-{
-	var db = req.db;	
-	var collection = db.get('tagCollection');
-
-	collection.find({},
-		function(err, docs)		
-			{
-				res.render("uploads/tags",{TagsList:docs})			
-			}
-		)
-	
-};
 
 exports.tagDetails = function(req, res)
 {
@@ -271,50 +240,6 @@ exports.searchimagebytags = function(req, res)
             }
         )
 }
-exports.allAlbums = function(req, res)
-{
-	var db = req.db;	
-	var collection = db.get('albumCollection');
-
-	collection.find({},
-		function(err, docs)		
-			{
-				
-				res.render("uploads/albums",{albumsList:docs})			
-			}
-		)
-};
-
-exports.albumDetails = function(req, res)
-{
-	var db = req.db;	
-	var collection = db.get('albumCollection');
-	var photocollection = db.get('photocollection');
-	var albumName = req.params.name;
-
-	collection.find({albumName : albumName},
-		function(err, docs)		
-			{
-				var Ids = [];
-				var ImageIdReleatedwithAlbum  = docs[0].ImgIds
-
-				for( i = 0 ; i < ImageIdReleatedwithAlbum.length; i++)	
-				{
-					Ids.push(new ObjectID(ImageIdReleatedwithAlbum[i]))
-				}
-
-				photocollection.find(
-
-					{ _id: { $in: Ids}},
-
-					function(err, docs)
-					{
-						res.render("uploads/albumDetails", {categoryImage:docs, albumName : albumName}) ;	
-					}
-				)
-			}
-		)
-};
 exports.deleteImage = function(req, res)
 {
 	var db = req.db;	

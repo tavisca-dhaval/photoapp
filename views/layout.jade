@@ -28,6 +28,7 @@ html
 				- }
 		div.navbar.navbar-default
 			ul.nav.navbar-nav.pull-left
+				- console.log(user)
 				li
 					a(class="" href="/albums" id="category") Album
 
@@ -35,10 +36,10 @@ html
 					a(class="" href="/showTags" id="tagsList") Tags
 				- if(user != null) {
 					li
-						a(href="/favourite" class="pull-right do-favourite") Favourite
+						a(href="/favourite" class="pull-right do-favourite") My Favourites
 				- } else {
 					li
-						a(href="/login" class="pull-right do-favourite") Favourite
+						a(href="/login" class="pull-right do-favourite") My Favourites
 				- }
 				- if(user && user.admin) {
 					li

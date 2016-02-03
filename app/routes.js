@@ -77,7 +77,7 @@ module.exports = function(app, passport) {
             res.render("uploads/drag-drop",{imgIds:imgIds,images:docs});
         });
     });
-    app.get('/favourite', customeJS.isLoggedIn, function(req,res){
+    app.get('/favourite', function(req,res){
         var userEmail = req.user.email;
         var db = req.db;
         var photocollection = db.get('photocollection');
@@ -105,7 +105,74 @@ module.exports = function(app, passport) {
             }
         })
     });
+    app.post('/saveAlbum',function(req,res){
+        var db = req.db;    
+        var albumCollection = db.get('albumCollection');
+        var x=qs.parse(req.body);
+        for(var i=0;i<x.idsss.length;i++){
+            var nobj= new ObjectID(x.idsss[i]);
+            albumCollection.update(
+                {albumName : req.body.albumName},
+                {$addToSet : {"ImgIds": nobj}},
+                {upsert : true} ,
+                function(err, docs){                
+                     
+                    res.send(docs);
+                }       
+            )
+        }
+    });
+    app.get('/albums',function(req,res){
+        var db = req.db;    
+        var collection = db.get('albumCollection');
 
+        collection.find(
+            {},
+            function(err, docs){
+                res.render("uploads/albums",{albumsList:docs})          
+            }
+        );
+    });
+    app.get('/albums/:name', function(req,res){
+        var db = req.db;    
+        var collection = db.get('albumCollection');
+        var photocollection = db.get('photocollection');
+        var albumName = req.params.name;
+
+        collection.find({albumName : albumName},
+            function(err, docs)     
+                {
+                    var Ids = [];
+                    var ImageIdReleatedwithAlbum  = docs[0].ImgIds
+
+                    for( i = 0 ; i < ImageIdReleatedwithAlbum.length; i++)  
+                    {
+                        Ids.push(new ObjectID(ImageIdReleatedwithAlbum[i]))
+                    }
+
+                    photocollection.find(
+
+                        { _id: { $in: Ids}},
+
+                        function(err, docs)
+                        {
+                            res.render("uploads/albumDetails", {categoryImage:docs, albumName : albumName}) ;   
+                        }
+                    )
+                }
+            )
+    })
+    app.get("/showTags",function(req,res){
+        var db = req.db;    
+        var collection = db.get('tagCollection');
+
+        collection.find(
+            {},
+            function(err, docs){
+                res.render("uploads/tags",{TagsList:docs})          
+            }
+        );
+    });
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
