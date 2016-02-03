@@ -16,24 +16,41 @@ module.exports = function(app, passport) {
     // PROFILE SECTION =========================
 
     // PROFILE SECTION =========================
-    app.get('/hello', customeJS.isLoggedIn, function(req, res) {
-        console.log(req.user)
-        res.render('hello', {
-            user : req.user
-        });
+    app.get('/users', function(req, res) {
+        var db = req.db;
+        var userCollection = db.get("user");
+        userCollection.find({},{},function(err,docs){
+            res.render('userlist', {
+                userData : docs
+            });
+        })
     });
-
+    app.post('/updateUserList', function(req,res){
+        var db = req.db;
+        var usercollection = db.get("user");
+        var nobj = new ObjectID(req.body.userId);
+        usercollection.update(
+            {},
+            {$set:{"admin":false}},
+            {multi: true},
+            function(err,docs){
+                usercollection.update(
+                    {"_id" : nobj},
+                    {$set: {"admin":true}},
+                    {upsert:true},
+                    function(err,docs){
+                        res.sendStatus(true);
+                    }
+                )
+            }
+        )
+    });
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
     });
 
-    app.get('/test',customeJS.isLoggedIn,function(req,res){
-        res.render('test',{
-            user:req.user
-        });
-    });
     app.get("/category", function(req, res){
         var email;
         var db = req.db;
@@ -165,14 +182,4 @@ module.exports = function(app, passport) {
             res.redirect('/hello');
         });
     });
-
-
 };
-
-// route middleware to ensure user is logged in
-// function isLoggedIn(req, res, next) {
-//     if (req.isAuthenticated())
-//         return next();
-
-//     res.redirect('/login');
-// }

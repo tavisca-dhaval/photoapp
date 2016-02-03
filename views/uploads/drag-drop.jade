@@ -1,7 +1,8 @@
 extends ../layout.jade
 
 block content
-	div#dropableDiv
+	- if(user && user.admin)
+		div#dropableDiv
 	div.container.image-container
 		div#myId.clearfix
 			div.clearfix

@@ -1,1 +1,23 @@
-ul.userlist #{userlist}
+extends layout.jade
+block content
+	.container
+		.row
+			.col-xs-6
+				table.userlist.table
+					thead
+						tr
+							th Name
+							th Email
+							th Set as Admin
+					tbody
+						each user in userData
+							tr
+								td #{user.name}
+								td #{user.email}
+								td 
+									- if (user.admin){
+										input(type="radio" name="super-user" value="#{user._id}" checked)
+									- } else {
+										input(type="radio" name="super-user" value="#{user._id}")
+									- }
+		button.btn.btn-primary.setAdmin Submit

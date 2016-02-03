@@ -16,6 +16,13 @@ $(function(){
 
 	 });
 
+	 $('.setAdmin').on('click',function(){
+	 	var userId = $('input[name="super-user"]:checked').val();
+	 	var params = {userId : userId};
+	 	$.post('/updateUserList', params, function(data){
+		});
+	 });
+
 	$('.create-album').on('click',function(){
 		$('#myModal').modal('toggle');
 	});

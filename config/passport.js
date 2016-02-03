@@ -41,7 +41,6 @@ module.exports = function(passport) {
 
     },
     function(req, token, refreshToken, profile, done) {
-    	console.log(profile)
     	// profile.identifier=profile.id;
       	// return done(null, profile);
         // asynchronous
@@ -53,8 +52,6 @@ module.exports = function(passport) {
 
             // check if the user is already logged in
             if (!req.user) {
-                console.log(111)
-                // console.log(req.user)
                 var db = req.db;
                 var collection = db.get('user');
                 collection.findOne({'email' : profile.emails[0].value},function(err,user){
@@ -63,8 +60,7 @@ module.exports = function(passport) {
                     if(user){
                         return done(null, user);
                     }else{
-                        console.log(555)
-                        collection.insert({userid:profile.id,token: token,name: profile.displayName,email: profile.emails[0].value},{},function(err,records){
+                        collection.insert({userid:profile.id,token: token,name: profile.displayName,email: profile.emails[0].value,admin:false},{},function(err,records){
                             if(err)
                                 throw err;
                             return done(null, records);

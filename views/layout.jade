@@ -33,15 +33,15 @@ html
 
 				li
 					a(class="" href="/showTags" id="tagsList") Tags
-				- if(user) {
+				- if(user && user.admin) {
 					li
 						a(href="javascript:void(0)" class="pull-right upload_link") Upload
 				- }
-				- if(user) {
+				- if(user && user.admin) {
 					li
 						a(href="javascript:void(0)" class="pull-right create-album") Create Album
 				- }
-				- if(user) {
+				- if(user && user.admin) {
 					li
 						a(href="javascript:void(0)" class="pull-right delete-image") Delete
 				- }
