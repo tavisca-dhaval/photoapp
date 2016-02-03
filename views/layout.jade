@@ -24,11 +24,10 @@ html
 						a(href="/logout") Logout
 				- } else {
 					p.pull-right
-						a(href="/login" class="pull-right") Login
+						a(href="javascript:void(0)",data-toggle="modal",data-target="#login",class="pull-right") Login
 				- }
 		div.navbar.navbar-default
 			ul.nav.navbar-nav.pull-left
-				- console.log(user)
 				li
 					a(class="" href="/albums" id="category") Album
 
@@ -39,7 +38,7 @@ html
 						a(href="/favourite" class="pull-right do-favourite") My Favourites
 				- } else {
 					li
-						a(href="/login" class="pull-right do-favourite") My Favourites
+						a(href="javascript:void(0)",data-toggle="modal",data-target="#login",class="pull-right do-favourite") My Favourites
 				- }
 				- if(user && user.admin) {
 					li
@@ -71,5 +70,15 @@ html
 			div.text-center.search-box
 				div.input-group
 					input(type="text" placeholder="Search" class="form-control" id="searchbytag")
-              
+		div#login.modal.fade
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button(type="button", class="close", data-dismiss="modal", aria-label="Close")
+							span(aria-hidden="true") &times;
+						h4.modal-title#modalLabel LogIn
+					.modal-body
+						p Login or Register with
+						a(class="btn btn-danger",href="/auth/google")
+							span.fa.fa-google-plus Google+
 		block content

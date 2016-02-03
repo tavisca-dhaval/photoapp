@@ -58,7 +58,7 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/login');
+        res.redirect('back');
     });
 
     app.get("/category", function(req, res){
@@ -212,10 +212,11 @@ module.exports = function(app, passport) {
 
         // the callback after google has authenticated the user
         app.get('/auth/google/callback',
-            passport.authenticate('google', {
-                successRedirect : '/category',
-                failureRedirect : '/'
-            }));
+            passport.authenticate('google'), 
+            function(req,res,next){
+                res.redirect("back")
+            }
+        );
 
     // =============================================================================
     // AUTHORIZE (ALREADY LOGGED IN / CONNECTING OTHER SOCIAL ACCOUNT) =============

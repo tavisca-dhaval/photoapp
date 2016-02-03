@@ -39,8 +39,7 @@ $(function(){
 	});
 	$('.fav-image').on('click',function(){
 		if($('#user-email').val() == "loggedOut"){
-			document.location.pathname = "/login";
-			
+			$('#login').modal('show');
 		}else{
 			var _this = $(this);
 			var params ={ ids: $(this).attr('id')};
