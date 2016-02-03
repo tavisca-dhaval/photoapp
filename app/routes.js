@@ -16,14 +16,24 @@ module.exports = function(app, passport) {
     // PROFILE SECTION =========================
 
     // PROFILE SECTION =========================
-    app.get('/users', function(req, res) {
+    app.get('/users', customeJS.isLoggedIn,function(req, res, next) {
         var db = req.db;
         var userCollection = db.get("user");
-        userCollection.find({},{},function(err,docs){
-            res.render('userlist', {
-                userData : docs
-            });
-        })
+        var userid = req.user._id;
+        userCollection.find(
+            {_id: userid},
+            function(err,docs){
+                if(docs[0].admin){
+                    userCollection.find({},{},function(err,docs){
+                        res.render('userlist', {
+                            userData : docs
+                        });
+                    });
+                }else{
+                    res.redirect("/category")
+                }
+            }
+        )
     });
     app.post('/updateUserList', function(req,res){
         var db = req.db;

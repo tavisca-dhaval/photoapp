@@ -33,6 +33,13 @@ html
 
 				li
 					a(class="" href="/showTags" id="tagsList") Tags
+				- if(user != null) {
+					li
+						a(href="/favourite" class="pull-right do-favourite") Favourite
+				- } else {
+					li
+						a(href="/login" class="pull-right do-favourite") Favourite
+				- }
 				- if(user && user.admin) {
 					li
 						a(href="javascript:void(0)" class="pull-right upload_link") Upload
@@ -43,14 +50,11 @@ html
 				- }
 				- if(user && user.admin) {
 					li
-						a(href="javascript:void(0)" class="pull-right delete-image") Delete
+						a(href="javascript:void(0)" class="pull-right rename-image") Rename
 				- }
-				- if(user != null) {
+				- if(user && user.admin) {
 					li
-						a(href="/favourite" class="pull-right do-favourite") Favourite
-				- } else {
-					li
-						a(href="/login" class="pull-right do-favourite") Favourite
+						a(href="javascript:void(0)" class="pull-right delete-image") Delete
 				- }
 				- if(user != null){
 					input(type="hidden" id="user-email" value="loggedIn")
