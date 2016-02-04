@@ -7,4 +7,7 @@ block content
 			each imPath in categoryImage
 				li
 					div.img-box
+						- if(user && user.admin){
+							span.glyphicon.glyphicon-remove-circle.remove-favourite(id="#{imPath._id}")
+						- }
 						img(src="/images/thumb/#{imPath.filename}")

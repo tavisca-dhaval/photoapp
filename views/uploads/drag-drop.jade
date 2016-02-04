@@ -10,7 +10,7 @@ block content
 					div.text-center.initial-container
 						a(href="javascript:void(0)" class="upload_link btn btn-danger") Browse Photos
 						p Or drag &amp; drop photos anywhere on this page
-				ul.cat-images.clearfix
+				ul.cat-images.drop-img.clearfix
 					each imgName in images
 						li
 							div.img-box
@@ -47,9 +47,38 @@ block content
 					h4(class="modal-title" id="myModalLabel") Create Album
 				div.modal-body
 					label(for="categoryName") Album Name
+					//- select.form-control(onchange="this.nextElementSibling.value=this.value")
+					//- 	option(value="")
+					//- 	option(value="xyz") xyz
 					input(type="text" name="albumName" class="form-control" id="albumName" placeholder="Album Name" value="")
 				div.modal-footer
 					button(id="createAlbum" type="button" class="btn btn-primary") Create
+
+	div(class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModal")
+		div(class="modal-dialog" role="document")
+			div.modal-content
+				div.modal-header
+					button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") &times;
+					h4(class="modal-title" id="myModalLabel") File Rename
+				div.modal-body
+					div.form-group
+						label(for="categoryName") File Name
+						input(type="text" class="form-control" name="oldName" id="oldName" readonly)
+						input(type="hidden" class="form-control" name="oldExtention" id="oldExtention" readonly)
+					div.form-group
+						label.ptm(for="categoryName") Rename
+						input(type="text" name="newName" class="form-control" id="newName" placeholder="Rename" value="")
+				div.modal-footer
+					button(id="renameFile" type="button" class="btn btn-primary") Submit
+	div(class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModal")
+		div(class="modal-dialog" role="document")
+			div.modal-content
+				div.modal-header.no-border
+					button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+						span(aria-hidden="true") &times;
+					h4(class="modal-title hide more-than-one-message" id="myModalLabel") You can't rename more one image at a time
+					h4(class="modal-title" id="myModalLabel") Please select image for further action
 
 	div.alert.alert-success.album-create-notification
 		| successfully created album "

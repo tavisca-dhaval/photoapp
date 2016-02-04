@@ -24,7 +24,11 @@ $(function(){
 	 });
 
 	$('.create-album').on('click',function(){
-		$('#myModal').modal('toggle');
+		if($('.img-selector.active').length){
+			$('#myModal').modal('toggle');
+		}else{
+			$('#alertModal').modal('toggle');
+		}
 	});
 	$('#createAlbum').on('click',function(){
 		var albumName = $('#myModal input[name="albumName"]').val();
@@ -37,18 +41,67 @@ $(function(){
 		  $('.album-create-notification').addClass('show');
 		});
 	});
+	$('.rename-image').on('click',function(){
+		if($('.img-selector.active').length){
+			if($('.img-selector.active').length > 1){
+				$('#alertModal h4').not('.more-than-one-message').hide();
+				$('#alertModal h4.more-than-one-message').removeClass('hide');
+				$('#alertModal').modal('toggle');
+			}else{
+				var fileName = $('.img-selector.active').attr('imgname').split(".")[0];
+				var fileExtention = $('.img-selector.active').attr('imgname').split(".")[1];
+				$('#renameModal #oldName').val(fileName);
+				$('#renameModal #oldExtention').val(fileExtention);
+				$('#renameModal').modal('toggle');
+			}
+		}else{
+			$('#alertModal').modal('toggle');
+		}
+	});
+	$('#renameFile').on('click',function(){
+		var oldName = $('#renameModal input[name="oldName"]').val();
+		var oldExtention = $('#renameModal input[name="oldExtention"]').val();
+		var newName = $('#renameModal input[name="newName"]').val();
+		if(newName != ""){
+			var params ={ id:$('.img-selector.active').attr('id'), oldName: oldName, extention: oldExtention, newName: newName};
+			$.post("/renameImage",params,function(){}).complete(function(response){
+				if(response.status == 200){
+					$('#renameModal').modal('hide');
+				}
+			});
+		}
+	});
+	$('#alertModal').on('hide.bs.modal',function(){
+		$(this).find('h4').show();
+		$(this).find('h4.more-than-one-message').addClass('hide');
+	})
 	$('.fav-image').on('click',function(){
 		if($('#user-email').val() == "loggedOut"){
 			$('#login').modal('show');
 		}else{
 			var _this = $(this);
 			var params ={ ids: $(this).attr('id')};
-			$.post('/favourite', params, function(data){
-			}).complete(function(response){
-				_this.addClass('fav');
-			});
+			if($(this).hasClass('fav')){
+				$.post('/removeFavourite', params,function(data){}).complete(function(){
+					_this.removeClass('fav');
+				});
+			}else{
+				$.post('/favourite', params, function(data){
+				}).complete(function(response){
+					_this.addClass('fav');
+				});
+			}
 		}
 	});
+	$('.remove-favourite').on('click',function(){
+		var parentElement = $(this).closest('li');
+		var imgId = $(this).attr('id');
+		var params = {ids:imgId};
+		console.log(params)
+		$.post('/removeFavourite', params,function(data){}).complete(function(){
+			parentElement.remove();
+		});
+	})
 	$('.delete-image').on('click',function(){
 		var xid = [];
 		var xname = [];

@@ -97,7 +97,7 @@ div.img-box
 	position: relative;
     border: 2px solid transparent;
 }
-div.img-box:hover,div.img-box.active{
+.drop-img div.img-box:hover, .drop-img div.img-box.active{
     border: 2px solid #006ac6;
 }
 div.img-box .glyphicon
@@ -381,7 +381,9 @@ div.img-box .glyphicon.active {
 .album-create-notification.show{
     opacity: 1;
 }
-
+.no-border{
+    border: none;
+}
 @media(max-width: 767px) {
     .bg-home {margin-top: 0; min-height: auto;}
     .bg-home h2 {font-weight: normal;}

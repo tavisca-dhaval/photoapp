@@ -1,5 +1,7 @@
 var customeJS = require('../public/js/node-scripts.js');
 var ObjectID = require('mongodb').ObjectID;
+var qs = require('qs');
+var fs  = require('fs');
 module.exports = function(app, passport) {
 
     // normal routes ===============================================================
@@ -78,32 +80,59 @@ module.exports = function(app, passport) {
         });
     });
     app.get('/favourite', function(req,res){
-        var userEmail = req.user.email;
-        var db = req.db;
-        var photocollection = db.get('photocollection');
-        var usercollection = db.get('user');
-        usercollection.find({email:userEmail},function(err,docs){
-            var Ids = [];
-            var favImgIds  = docs[0].ImgIds;
-            if(favImgIds !== undefined){
-                for( i = 0 ; i < favImgIds.length; i++)  
-                {
-                    Ids.push(new ObjectID(favImgIds[i]))
-                }
-                photocollection.find(
-
-                    { _id: { $in: Ids}},
-
-                    function(err, docs)
+        if(req.user != undefined){
+            var userEmail = req.user.email;
+            var db = req.db;
+            var photocollection = db.get('photocollection');
+            var usercollection = db.get('user');
+            usercollection.find({email:userEmail},function(err,docs){
+                var Ids = [];
+                var favImgIds  = docs[0].ImgIds;
+                if(favImgIds !== undefined){
+                    for( i = 0 ; i < favImgIds.length; i++)  
                     {
-                        res.render("userFavourite", {categoryImage:docs}) ;   
+                        Ids.push(new ObjectID(favImgIds[i]))
                     }
-                )
-            }else{
-                res.render("userFavourite", {categoryImage:[]});
-                res.end();
+                    photocollection.find(
+
+                        { _id: { $in: Ids}},
+
+                        function(err, docs)
+                        {
+                            res.render("userFavourite", {categoryImage:docs}) ;   
+                        }
+                    )
+                }else{
+                    res.render("userFavourite", {categoryImage:[]});
+                    res.end();
+                }
+            });
+        }else{
+            res.redirect("/category")
+        }
+    });
+    app.post("/renameImage",function(req,res){
+        var db = req.db;
+        var collection = db.get('photocollection');
+        var oldName = req.body.oldName+"."+req.body.extention;
+        var newName = req.body.newName+"."+req.body.extention;
+        var oldFilePath = './public/images/'+oldName;
+        var oldThumbFilePath = './public/images/thumb/'+oldName;
+        var newFilePath = './public/images/'+newName;
+        var newThumbFilePath = './public/images/thumb/'+newName;
+        fs.rename(oldFilePath, newFilePath, function (err, data) {
+            if(err) console.log(err)
+        });
+        fs.rename(oldThumbFilePath, newThumbFilePath, function (err, data) {
+            if(err) console.log(err)
+        });
+        collection.update(
+            { _id: req.body.id},
+            {$set:{"filename":newName}},
+            function(err,docs){
+                res.send(200)
             }
-        })
+        )
     });
     app.post('/saveAlbum',function(req,res){
         var db = req.db;    
@@ -173,6 +202,23 @@ module.exports = function(app, passport) {
             }
         );
     });
+    app.post('/removeFavourite',function(req,res){
+        var db = req.db;    
+        var userCollection = db.get('user');
+        var nobj= new ObjectID(req.body.ids);
+        if(req.user){
+            userCollection.update(
+                {email: req.user.email},
+                {$pull:{"ImgIds": nobj}},
+                {multi:true},
+                function(err,docs){
+                    res.send(true);
+                }
+            )
+        }else{
+            res.end();
+        }
+    })
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================

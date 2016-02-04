@@ -6,8 +6,9 @@ block content
 			p 
 				| You don't have any favourite. For select your favourites 
 				a(href="/category") click here
-		ul.cat-images
+		ul.cat-images.fav-images
 			each imPath in categoryImage
 				li
 					div.img-box
+						span.glyphicon.glyphicon-remove-circle.remove-favourite(id="#{imPath._id}")
 						img(src="/images/thumb/#{imPath.filename}")
