@@ -1,5 +1,6 @@
 var SelectedImage = null;
 var SelectedImgName = null;
+var imgArray=[];
 $(function(){
 
 	 $('#searchbytag').typeahead(	 	
@@ -131,6 +132,18 @@ $(function(){
 		
 	});
 
+	$('#downloadImg').on('click',function(){		
+		//var imgArray = [];
+		var params ={ files:imgArray };	
+		$.post('/download', params, function(data){
+		});
+
+
+		$( document ).ajaxComplete(function() {
+		 console.log('Downloaded');
+		});
+	});
+
 	$("#popup").on('click','#updatecategory', function(){
 		var name = $("#categoryName").val();
 		var oldValue = $("#categoryName").attr('value');
@@ -250,9 +263,10 @@ $('.img-selector').on('click',function(){
 	var index = imgIdArray.indexOf(imgId);
 	console.log(index)
 	if(index > -1){
-		imgIdArray.splice(index,1);
+		imgIdArray.splice(index,1);		
 	}else{
 		imgIdArray.push(imgId);
+		$(".zipArchive").show();
 	}
 
 	if($(this).hasClass('active'))
@@ -263,10 +277,14 @@ $('.img-selector').on('click',function(){
 	else{
 		
 		SelectedImage = null;	
-		SelectedImgName = null		
+		SelectedImgName = null
+		$(".zipArchive").hide();		
 	}
+	imgArray.push(SelectedImgName);
 		
 });
+
+$(".zipArchive").hide();
 
 $("#img-info").on('click',function(){
 
