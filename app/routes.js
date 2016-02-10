@@ -134,6 +134,18 @@ module.exports = function(app, passport) {
             }
         )
     });
+    app.get("/searchAlbums",function(req, res){   
+        console.log(req.query)
+        var txtval = req.query.query
+        var db = req.db;    
+        var collection = db.get('albumCollection');
+        collection.find(
+                {albumName : {'$regex': txtval}},   
+                function(err, docs){                
+                    res.send(docs);
+                }
+            )
+    });
     app.post('/saveAlbum',function(req,res){
         var db = req.db;    
         var albumCollection = db.get('albumCollection');

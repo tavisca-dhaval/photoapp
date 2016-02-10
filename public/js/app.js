@@ -1,21 +1,36 @@
 var SelectedImage = null;
 var SelectedImgName = null;
 $(function(){
+	if($('#searchbytag').length){
+		 $('#searchbytag').typeahead(	 	
+		 	{
+		 		onSelect: function(item) {
+		 			console.log(item.text)
+		 			location.replace('/showTags/'+item.text)
+		    },
+		   ajax: {
+	            url: '/searchbytag',
+	            method: 'get',
+	            triggerLength: 1,
+	            displayField: "tagName",
+	        },
 
-	 $('#searchbytag').typeahead(	 	
-	 	{
-	 		onSelect: function(item) {
-	 			location.replace('/showTags/'+item.text)
-	    },
-	   ajax: {
-            url: '/searchbytag',
-            method: 'get',
-            triggerLength: 1,
-            displayField: "tagName",
-        },
-
-	 });
-
+		 });
+	}
+	if($('#albumName').length){
+	 	$('#albumName').typeahead(	 	
+	 		{
+	 			onSelect: function(item) {
+	 				console.log(item.text)
+	    	},
+		   	ajax: {
+	            url: '/searchAlbums',
+	            method: 'get',
+	            triggerLength: 1,
+	            displayField: "albumName",
+	        },
+	 	});
+	 }
 	 $('.setAdmin').on('click',function(){
 	 	var userId = $('input[name="super-user"]:checked').val();
 	 	var params = {userId : userId};
