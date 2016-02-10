@@ -12,6 +12,7 @@ var routes = require('./routes');
 var user = require('./routes/users');
 var qs = require('qs');
 var passport = require('passport');
+var archiver = require('archiver');
 var expressSession = require('express-session');
 
 // configuration ===============================================================
@@ -83,6 +84,7 @@ app.post('/checkImageExist',routes.imageExistCheck);
 app.post('/category', routes.category)
 // app.get('/albums', routes.allAlbums);
 app.post('/favourite', routes.favourite);
+app.post('/download',routes.download);
 
 // app.get('/albums/:name', routes.albumDetails)
 

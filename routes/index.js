@@ -9,6 +9,7 @@ var ExifImage = require('exif').ExifImage;
 var bodyParser = require('body-parser');
 var qs = require('qs');
 var session = require('express-session');
+var archiver = require('archiver');
 
 
 exports.editcategory = function(req, res){   
@@ -240,6 +241,40 @@ exports.searchimagebytags = function(req, res)
             }
         )
 }
+exports.download = function (req, res) {
+	var output = fs.createWriteStream('./public/' + '/new.zip');
+	var archive = archiver('zip');
+	var filesNames = qs.parse(req.body).files;
+	console.log(filesNames);	
+	var selected = [];
+
+	for(var i=0;i<filesNames.length;i++){
+		selected.push(filesNames[i])
+	}
+		// for (var i =0 ; i < filesNames.length; i++) {
+		// 	selected.push(filesNames[i]);
+		// }
+	
+	output.on('close', function() {
+	  console.log(archive.pointer() + ' total bytes');
+	  console.log('archiver has been finalized and the output file descriptor has closed.');
+	  res.download('./public/' + "/new.zip")
+	});
+
+	archive.on('error', function(err) {
+	  throw err;
+	});
+	archive.pipe(output);
+
+	archive.bulk([	    
+
+
+	    { expand: true, cwd: 'public/images/', src: [selected], dest: '/'}
+	]);
+
+	archive.finalize();
+	
+};
 exports.deleteImage = function(req, res)
 {
 	var db = req.db;	

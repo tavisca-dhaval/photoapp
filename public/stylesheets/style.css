@@ -384,6 +384,14 @@ div.img-box .glyphicon.active {
 .no-border{
     border: none;
 }
+
+.zipArchive {
+    width: 20%;
+    position: absolute;
+    left: 38%;
+    top: 16%;
+}
+
 @media(max-width: 767px) {
     .bg-home {margin-top: 0; min-height: auto;}
     .bg-home h2 {font-weight: normal;}
