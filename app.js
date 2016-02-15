@@ -85,6 +85,7 @@ app.post('/category', routes.category)
 // app.get('/albums', routes.allAlbums);
 app.post('/favourite', routes.favourite);
 app.post('/download',routes.download);
+app.get('/downloadImg',routes.downloadImg);
 
 // app.get('/albums/:name', routes.albumDetails)
 

@@ -118,6 +118,16 @@ $(function(){
 			parentElement.remove();
 		});
 	})
+	$('.remove-from-album').on('click',function(){
+		var parentElement = $(this).closest('li');
+		var albumName = $('#albumName').attr('album-name');
+		var imgId = $(this).attr('id');
+		var params = {ids:imgId,albumName:albumName};
+		// console.log(params)
+		$.post('/removeFromAlbum', params,function(data){}).complete(function(){
+			parentElement.remove();
+		});
+	})
 	$('.delete-image').on('click',function(){
 		var xid = [];
 		var xname = [];
@@ -153,9 +163,9 @@ $(function(){
 		$.post('/download', params, function(data){
 		});
 
-
 		$( document ).ajaxComplete(function() {
-		 console.log('Downloaded');
+			// $.get('/downloadImg/new.zip',function(data){})
+			window.location.replace(window.location.protocol + "//" + window.location.host + '/downloadImg');
 		});
 	});
 

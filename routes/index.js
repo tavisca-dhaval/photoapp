@@ -242,7 +242,7 @@ exports.searchimagebytags = function(req, res)
         )
 }
 exports.download = function (req, res) {
-	var output = fs.createWriteStream('./public/' + '/new.zip');
+	var output = fs.createWriteStream('./public/new.zip');
 	var archive = archiver('zip');
 	var filesNames = qs.parse(req.body).files;
 	console.log(filesNames);	
@@ -258,7 +258,8 @@ exports.download = function (req, res) {
 	output.on('close', function() {
 	  console.log(archive.pointer() + ' total bytes');
 	  console.log('archiver has been finalized and the output file descriptor has closed.');
-	  res.download('./public/' + "/new.zip")
+	  return res.status(200).send('OK').end();
+	  // res.download('./public/' + "/new.zip")
 	});
 
 	archive.on('error', function(err) {
@@ -267,14 +268,19 @@ exports.download = function (req, res) {
 	archive.pipe(output);
 
 	archive.bulk([	    
-
-
 	    { expand: true, cwd: 'public/images/', src: [selected], dest: '/'}
 	]);
 
 	archive.finalize();
 	
 };
+exports.downloadImg = function(req,res){
+	// var filePath = './public/'+req.params.file;
+	// console.log(req.params.file)
+	res.download('./public/new.zip',function(err){
+		// fs.unlink('./public/new.zip')
+	});
+}
 exports.deleteImage = function(req, res)
 {
 	var db = req.db;	

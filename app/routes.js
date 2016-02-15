@@ -231,6 +231,23 @@ module.exports = function(app, passport) {
             res.end();
         }
     })
+    app.post('/removeFromAlbum',function(req,res){
+        var db = req.db;    
+        var albumCollection = db.get('albumCollection');
+        var nobj= new ObjectID(req.body.ids);
+        if(req.user){
+            albumCollection.update(
+                {albumName: req.body.albumName},
+                {$pull:{"ImgIds": nobj}},
+                {multi:true},
+                function(err,docs){
+                    res.send(true);
+                }
+            )
+        }else{
+            res.end();
+        }
+    })
     // =============================================================================
     // AUTHENTICATE (FIRST LOGIN) ==================================================
     // =============================================================================
