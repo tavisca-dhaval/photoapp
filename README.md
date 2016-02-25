@@ -23,6 +23,9 @@ passport.use(new GoogleStrategy({
 ```
 Use `passport.authenticate()`, specifying the `'google'` strategy, to authenticate requests.
 
+### 2. Drag & Drop to upload photos
+photoApp uses third-party javascript library [Dropzonejs](http://www.dropzonejs.com/) to uplopad photos, using drag-and-drop method, as well as by browsing from file system. Include the flie ```<script src="./path/to/dropzone.js"></script>```. Dropzone is now activated and available as ```window.Dropzone```. Using this, super-user can upload `single photo` as well as `multiple photos` at a time. If duplicate photo are added, it provides a check on, whether to keep both copies or replace the existing one.
+
 ### 3. Search based on file name or #tags
 photoApp gives user, the ability to search images, based on the **_#tags_** or **_file name_**. The search box uses the bootstrap  **autosuggest** feature, to help the search. As soon as the user types first three characters of the name of file or tag, it auto-populates the dropdown with the already existing labels.
 
