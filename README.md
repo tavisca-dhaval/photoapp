@@ -66,4 +66,4 @@ EXIF stands for Exchangeable Image File, a format that is a standard for storing
 User provided certain access rights, can rename. 
 
 Inline-style: 
-![rename image](https://drive.google.com/a/tavisca.com/file/d/0B77YCQPaVz3PaDRscTIyV1hTM3c/view "Rename Image")
+![rename image](https://drive.google.com/file/d/0B77YCQPaVz3PaDRscTIyV1hTM3c/view?usp=sharing"Rename Image")
