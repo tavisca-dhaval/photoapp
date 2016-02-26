@@ -1,10 +1,10 @@
 # PhotoApp
-PhotoApp is a tool to access all the image-related work under a single application. It facilitates the users to search and download images, based on the **_#tags_** and **_file names_**. It is developed using the Nodejs and ExpressJs with the Jade templating engine.
+PhotoApp is an application managing all the image-related work, within a single tool. It facilitates the users to upload, search and download images, based on the **_#tags_** and **_file names_**. It is developed using the Nodejs and ExpressJs with the Jade templating engine.
 
 ## Getting started with PhotoApp API
 
 ### 1. Authentication
-PhotoApp uses `passport-google-oauth` strategy [Passport](http://passportjs.org/) for authenticating with [Google](http://www.google.com/) using OAuth 1.0a and OAuth 2.0. This module lets you authenticate using Google in your Node.js applications. By plugging into Passport, Google authentication can be easily and unobtrusively integrated into any application or framework that supports [Connect](http://www.senchalabs.org/connect/)-style middleware, including [Express](http://expressjs.com/)
+PhotoApp uses `passport-google-oauth` strategy [Passport](http://passportjs.org/) for authenticating with [Google](http://www.google.com/) internally using, OAuth 1.0a and OAuth 2.0. This module lets user authenticate using Google in your Node.js applications. By plugging into Passport, Google authentication can be easily and unobtrusively integrated into any application or framework that supports [Connect](http://www.senchalabs.org/connect/)-style middleware, including [Express](http://expressjs.com/)
 
 ```Javascript
 var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
@@ -63,6 +63,16 @@ EXIF stands for Exchangeable Image File, a format that is a standard for storing
 
 ### 7. Rename Image
 User provided certain access rights, can rename the images. 
-
-Inline-style: 
 ![rename image](https://drive.google.com/a/tavisca.com/file/d/0B77YCQPaVz3PaDRscTIyV1hTM3c/view "Rename Image")
+
+### 8. Create Album
+User with specific autherization can create albums. While other users can view it in the **Album** tab. Following are the steps to add images to an album.
+1. Select atleast one image to create an album.
+2. Once selected, click on the **Create Album** link.
+3. Enter the name in the `Album Name` input box of the modal pop-up opened.
+4. If selected images are to be assigned under existing album name, start typing album-name in the `Album Name` input box in the modal opened. It auto-populates the names of the existing albums.
+
+### 9. Download Images
+
+
+### 10. Favourites
