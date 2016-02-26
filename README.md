@@ -73,6 +73,7 @@ User with specific autherization can create albums. While other users can view i
 4. If selected images are to be assigned under existing album name, start typing album-name in the `Album Name` input box in the modal opened. It auto-populates the names of the existing albums.
 
 ### 9. Download Images
+Each User can downlod either single image or multiple based on the selection of the images. A zipped-folder is downloaded containing all the images selected. The selected images are stored in an JavaScript array, which stores the path of the images added. The download link, downloads the images from the directed paths.
 
-
-### 10. Favourites
+### 10. My Favourites
+PhotoApp allows each user to add images to `My Favourites` individually. The images added to the favourites, are seperated with a red-colored heart icon on them.
