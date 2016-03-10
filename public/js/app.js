@@ -47,6 +47,10 @@ $(function(){
 		}
 	});
 	$('#createAlbum').on('click',function(){
+		var imgIdArray = [];
+		$('.img-selector.active').each(function(){
+			imgIdArray.push($(this).attr('id'));
+		})
 		var albumName = $('#myModal input[name="albumName"]').val();
 		var params ={ albumName:albumName, idsss: imgIdArray};	
 		$('.album-create-notification span').html(albumName);
@@ -280,20 +284,13 @@ $(function(){
 	});
 
 /********************* Effects Js****************/
-var imgIdArray=[];
-$('.img-selector').on('click',function(){
+$('.img-selector').on('click',function(e){
+	e.stopPropagation();
 	var imgId = $(this).closest('.img-box').find('.img-selector').attr('id');
 	$(this).toggleClass('active');
 	$(this).closest('.img-box').toggleClass('active');
-	var index = imgIdArray.indexOf(imgId);
-	console.log(index)
-	if(index > -1){
-		imgIdArray.splice(index,1);		
-	}else{
-		imgIdArray.push(imgId);
-		$(".zipArchive").show();
-	}
-
+	$(this).parent().toggleClass('selected');
+	$(".zipArchive").show();
 	if($(this).hasClass('active'))
 	{
 		SelectedImage = $(this).attr('id');
@@ -382,5 +379,12 @@ $(".tagssection").on('click','.InfoPane-removeTag', function(){
 			  $(currentObject).parents('.InfoPane-tag').remove();
 		});
 
-	});
+});
+
+$('.image-container').on('click',function(e){
+	$('.zipArchive').hide();
+	$('.img-selector').removeClass('active');
+	$('.img-action').removeClass('selected');
+	imgIdArray = [];
+})
 });

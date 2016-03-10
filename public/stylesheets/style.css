@@ -12,12 +12,21 @@ a:hover,a:focus
 {
 	cursor: pointer;
 }
+.mr-0{
+    margin-right: 0;
+}
+.navbar-nav.mr-0{
+    margin-right: 0;
+}
 header{
 	background: #333;
 	color: white;
-	padding: 10px 30px 10px 0;
+	padding: 10px 15px;
     z-index: 1;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 header h1{
 	margin: 0;
@@ -30,10 +39,15 @@ header a,header a:hover{
 	font-weight: bold;
 }
 .navbar{
-    position: relative;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
     z-index: 1;
     margin-bottom: 0;
+    padding: 0 15px;
 }
+
 ul.category-list{
 	list-style-type: none;
 	padding: 20px 0;
@@ -98,21 +112,37 @@ div.img-box
     border: 2px solid transparent;
 }
 .drop-img div.img-box:hover, .drop-img div.img-box.active{
-    border: 2px solid #006ac6;
+    /*border: 2px solid #006ac6;*/
+}
+div.img-action{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+    display: none;
 }
 div.img-box .glyphicon
 {
 	color: #efefef;
     font-size: 22px;
-    position: absolute;
-    right: 0;
     cursor: pointer;
+    float: right;
+    margin-left: 10px;
 }
-div.img-box .glyphicon.fav-image{
-    right: 30px;
+div.img-box .glyphicon.img-selector{
+    background: white;
+    border-radius: 50%;
 }
-div.img-box .glyphicon.fav-image.fav{
+div.img-box .glyphicon.fav-image.fav, div.img-box .glyphicon.remove-favourite{
     color: #d9534f;
+}
+div.img-box:hover .img-action, div.img-box .img-action.selected{
+    display: inline-block;
+}
+div.img-box .download-icon{
+    float: left;
 }
 .tag-name { 
     margin-top: 15px;
@@ -136,7 +166,7 @@ div.img-box .glyphicon.fav-image.fav{
     box-sizing: border-box;
     bottom: 0;
     padding: 20px;
-    position: absolute;
+    position: fixed;
     float: right;
     margin-right: -20%;
     top: 112px;
@@ -151,9 +181,9 @@ div.img-box .glyphicon.fav-image.fav{
 	margin-right: 0;
 	display: block;
 }
-div.img-box .glyphicon.active {
+div.img-box .glyphicon.active, div.img-box .glyphicon.selected {
 
-	color: #006ac6;
+	color: #3398dd;
 }
 .navbar-nav
 {
@@ -232,6 +262,7 @@ div.img-box .glyphicon.active {
 }
 .image-container{
     width: 100%;
+    margin-top: 122px;
     /*transition: all .3s linear ;*/
 }
 .image-container.small{
@@ -401,4 +432,53 @@ div.img-box .glyphicon.active {
 @media(max-width: 1023px) {
     .login-wrapper .right-panel .form-wrapper .well { width: 80%;}
     .login-wrapper .right-panel .login-btn { float: none; display: block; margin-bottom: 8px;}
+}
+
+.selection {
+    position: absolute;
+    border: 1px solid #89B;
+    background: #BCE;
+    background-color: #3398dd;
+    border-color: #8B9;
+    }
+.size2 {
+    height: 118px;
+    line-height: 118px;
+    }
+.size3 {
+    height: 178px;
+    line-height: 178px;
+    }
+
+.grid-sizer,
+.grid-item {
+  width: 20%;
+}
+
+.grid-item {
+  float: left;
+}
+
+.grid-item img {
+  display: block;
+  width: 100%;
+}
+.image-container{
+    padding: 30px;
+}
+
+@media screen and (max-width: 1024px){
+    .grid-sizer,
+    .grid-item {
+      width: 25%;
+    }
+}
+@media screen and (max-width: 767px){
+    .grid-sizer,
+    .grid-item {
+      width: 50%;
+    }
+    .image-container{
+        padding: 15px;
+    }
 }

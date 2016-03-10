@@ -1,6 +1,10 @@
 extends ../layout.jade
 
 block content
+	script(src='/js/jquery.event.drag-2.2.js')
+	script(src='/js/jquery.event.drop-2.2.js')
+	script(src='/js/masonry.pkgd.min.js')
+	script(src='/js/imagesloaded.pkgd.min.js')
 	- if(user && user.admin)
 		div#dropableDiv
 	div.container.image-container
@@ -10,9 +14,23 @@ block content
 					div.text-center.initial-container
 						a(href="javascript:void(0)" class="upload_link btn btn-danger") Browse Photos
 						p Or drag &amp; drop photos anywhere on this page
-				ul.cat-images.drop-img.clearfix
+				div.grid
+					div.grid-sizer
+					//- ul.cat-images.drop-img.clearfix
 					each imgName in images
-						li
+						div.grid-item.img-box
+							a(href="/images/#{imgName.filename}" class="fancybox-button" rel="fancybox-button")
+								img(src="/images/#{imgName.filename}")
+							div.img-action
+								span(aria-hidden="true" class="glyphicon glyphicon-ok-sign img-selector" id="#{imgName._id}" imgName="#{imgName.filename}")
+								- if(imgIds.indexOf(imgName._id) > -1){
+									span(aria-hidden="true" class="glyphicon glyphicon-heart fav-image fav" id="#{imgName._id}" imgName="#{imgName.filename}")
+								- }else{
+									span(aria-hidden="true" class="glyphicon glyphicon-heart fav-image" id="#{imgName._id}" imgName="#{imgName.filename}")
+								- }
+								a(href="/images/#{imgName.filename}" class="download-icon" download)
+									span(class="glyphicon glyphicon-save")
+						//- li
 							div.img-box
 								a(href="/images/#{imgName.filename}" class="fancybox-button" rel="fancybox-button")
 									img(src="/images/thumb/#{imgName.filename}")
@@ -95,13 +113,51 @@ block content
 	script(src='/images/source/helpers/jquery.fancybox-thumbs.js')
 	script.
 		$(document).ready(function() {
-		$(".fancybox-button").fancybox({
-		prevEffect		: 'none',
-		nextEffect		: 'none',
-		closeBtn		: false,
-		helpers		: {
-		title	: { type : 'inside' },
-		buttons	: {}
-		}
-		});
+			$(".fancybox-button").fancybox({
+				prevEffect		: 'none',
+				nextEffect		: 'none',
+				closeBtn		: false,
+				helpers		: {
+					title	: { type : 'inside' },
+					buttons	: {}
+				}
+			});
+			$( document )
+				.drag("start",function( ev, dd ){
+					console.log(11)
+					return $('<div class="selection" />')
+						.css('opacity', .45 )
+						.appendTo( document.body );
+				})
+				.drag(function( ev, dd ){
+					$( dd.proxy ).css({
+						top: Math.min( ev.pageY, dd.startY ),
+						left: Math.min( ev.pageX, dd.startX ),
+						height: Math.abs( ev.pageY - dd.startY ),
+						width: Math.abs( ev.pageX - dd.startX )
+					});
+				})
+				.drag("end",function( ev, dd ){
+					$( dd.proxy ).remove();
+				});
+			$('.img-box')
+				.drop("start",function(){
+					$( this ).find('.img-selector').addClass("selected");
+				})
+				.drop(function( ev, dd ){
+					$( this ).find('.img-selector').toggleClass("active");
+					$( this ).find('.img-action').toggleClass("selected");
+				})
+				.drop("end",function(){
+					$( this ).find('.img-selector').removeClass("selected");
+				});
+			$.drop({ multi: true });
+			var $grid = $('.grid').imagesLoaded( function() {
+			  $grid.masonry({
+			    itemSelector: '.grid-item',
+			    percentPosition: true,
+			    columnWidth: '.grid-sizer'
+			  }); 
+			});
+
 		});
